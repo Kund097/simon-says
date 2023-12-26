@@ -1,0 +1,22 @@
+{
+  "name": "simon-says",
+  "version": "1.0.0",
+  "description": "juego de simon dice",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kund097/simon-says.git"
+  },
+  "author": "Facundo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kund097/simon-says/issues"
+  },
+  "homepage": "https://github.com/Kund097/simon-says#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.2"
+  }
+}
