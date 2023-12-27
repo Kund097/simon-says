@@ -1,0 +1,25 @@
+.container-box {
+    background-color: black;
+    height: 100%;
+        
+}
+
+.box {
+    height: 200px;
+    border: 1px solid black;
+    opacity: 0.5;
+    transition: opacity 500ms;
+}
+
+#box-1{
+    background-color: red;
+}
+#box-2{
+    background-color: blue;
+}
+#box-3{
+    background-color: yellow;
+}
+#box-4{
+    background-color: green;
+}
