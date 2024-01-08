@@ -1,50 +1,57 @@
 const $startButton = document.querySelector("#start-button");
-const SEQUENCE = [];
+const MACHINE_SEQUENCE = [];
+const PLAYER_SEQUENCE = [];
+let counter = 0;
 $startButton.onclick = function () {
     // updateState();
     blockInputBox();
-    startMachineSequence();
-    // unlockInputBox();
+    turnMachineSequence();
+    playerTurn();
+    compareSequence();
 };
 
 function unlockInputBox() {
     document.querySelectorAll(".box").forEach(function (element) {
         element.onclick = function (e) {
-            console.log(e.target);
-            highlightElement(e.target);
+            PLAYER_SEQUENCE.push(e.target);
+            console.log(PLAYER_SEQUENCE);
+            highlightElement(e.target, 0);
         };
     });
 }
 
 function blockInputBox() {
-    document.querySelectorAll(".box").forEach((onclick = function () {}));
+    document.querySelectorAll(".box").forEach(function (element) {
+        element.onclick = function () {};
+    });
 }
 
-function startMachineSequence() {
-    SEQUENCE.push(getRandomBox());
-
-    SEQUENCE.forEach(function (box, index) {
+function turnMachineSequence() {
+    counter++;
+    MACHINE_SEQUENCE.push(getRandomBox());
+    console.log("turno maquina");
+    MACHINE_SEQUENCE.forEach(function (box, index) {
         setTimeout(function () {
             console.log(box);
-            highlightElement(box);
-            box.style.opacity = "1";
+            highlightElement(box, 500);
         }, (index + 1) * 1000);
     });
-
-    // setTimeout(
-    //     SEQUENCE.forEach(function (box) {
-    //         box.style.opacity = "1";
-    //         highlightElement(box);
-    //     }),
-    //     time
-    // );
 }
 
-function highlightElement(element) {
-    // element.style.opacity = "1";
+function highlightElement(element, time) {
+    let bgColor = window.getComputedStyle(element).backgroundColor;
     setTimeout(function () {
-        element.style.opacity = "0.5";
-    }, 500);
+        element.style.opacity = "1";
+        element.style.scale = "1.02";
+        element.style.zIndex = "5";
+        element.style.boxShadow = `0px 0px 105px 0px ${bgColor}`;
+        setTimeout(function () {
+            element.style.opacity = "0.8";
+            element.style.scale = "1";
+            element.style.zIndex = "0";
+            element.style.boxShadow = "0px 0px 0px 0px rgb(0,0,0)";
+        }, 500);
+    }, time);
 }
 
 function getRandomBox() {
@@ -55,4 +62,22 @@ function getRandomBox() {
 
 function updateState(turn = "turno maquina") {
     document.querySelector("#state").textContent += `${turn}`;
+}
+
+function playerTurn() {
+    setTimeout(function () {
+        console.log("turno jugador");
+        unlockInputBox();
+    }, (MACHINE_SEQUENCE.length + 1.5) * 1000);
+}
+
+function compareSequence() {
+    return (
+        MACHINE_SEQUENCE[MACHINE_SEQUENCE.length - 1] ===
+        PLAYER_SEQUENCE[PLAYER_SEQUENCE.length - 1]
+    );
+}
+
+function playerLose() {
+    compareSequence() ? turnMachineSequence() : blockInputBox();
 }

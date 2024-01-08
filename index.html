@@ -11,24 +11,25 @@
 </head>
 
 <body>
-
-    <div class="container mt-5 ">
-        <div class="alert alert-warning d-flex justify-content-evenly align-items-center" role="alert">
-            Simón dice <span id="state"></span>
-            <button type="button" class="btn btn-outline-success" id="start-button">Empezar</button>
+    <div class="container-fluid">
+        <div class="container pt-5">
+            <div class="alert alert-warning d-flex justify-content-evenly align-items-center" role="alert">
+                Simón dice <span id="state"></span>
+                <button type="button" class="btn btn-outline-success" id="start-button">Empezar</button>
+            </div>
         </div>
+
+        <div class="container pt-5">
+            <div class="row row-cols-2">
+                <div class="col box" id="box-1"></div>
+                <div class="col box" id="box-2"></div>
+                <div class="col box" id="box-3"></div>
+                <div class="col box" id="box-4"></div>
+            </div>
+        </div>
+        <script src="main.js"></script>
     </div>
 
-    <div class="container mt-5">
-        <div class="row row-cols-2">
-            <div class="col box" id="box-1">A</div>
-            <div class="col box" id="box-2">B</div>
-            <div class="col box" id="box-3">C</div>
-            <div class="col box" id="box-4">D</div>
-        </div>
-    </div>
-
-    <script src="main.js"></script>
 </body>
 
 </html>
