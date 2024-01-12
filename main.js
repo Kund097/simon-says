@@ -1,50 +1,68 @@
 const $startButton = document.querySelector("#start-button");
-const MACHINE_SEQUENCE = [];
-const PLAYER_SEQUENCE = [];
-let counter = 0;
+let machineSequence = [];
+let playerSequence = [];
+let turnCounter = 0;
+
 $startButton.onclick = function () {
-    // updateState();
-    blockInputBox();
-    turnMachineSequence();
-    playerTurn();
-    compareSequence();
+    turnCounter ? console.log("ya empezó la partida") : startTurn();
 };
 
-function unlockInputBox() {
-    document.querySelectorAll(".box").forEach(function (element) {
-        element.onclick = function (e) {
-            PLAYER_SEQUENCE.push(e.target);
-            console.log(PLAYER_SEQUENCE);
-            highlightElement(e.target, 0);
-        };
+function startTurn() {
+    turnMachineSequence();
+    playerTurn();
+}
+
+function unlockPlayerInput() {
+    document.querySelectorAll(".box").forEach(function (boxElement) {
+        boxElement.onclick = handlePlayerInput;
     });
 }
 
-function blockInputBox() {
-    document.querySelectorAll(".box").forEach(function (element) {
-        element.onclick = function () {};
+function blockPlayerInput() {
+    document.querySelectorAll(".box").forEach(function (boxElement) {
+        boxElement.onclick = function () {};
     });
+}
+
+function playerTurn() {
+    setTimeout(function () {
+        console.log("turno jugador");
+        updateState("player");
+        unlockPlayerInput();
+    }, (machineSequence.length + 1.5) * 1000);
+}
+
+function handlePlayerInput(event) {
+    let $box = event.target;
+    playerSequence.push($box);
+    highlightElement($box);
+    console.log(playerSequence);
+
+    let turnResults = compareSequence();
+    handleResults(turnResults);
 }
 
 function turnMachineSequence() {
-    counter++;
-    MACHINE_SEQUENCE.push(getRandomBox());
+    updateState("machine");
+    blockPlayerInput();
+    turnCounter++;
+    machineSequence.push(getRandomBox());
     console.log("turno maquina");
-    MACHINE_SEQUENCE.forEach(function (box, index) {
+    machineSequence.forEach(function (box, index) {
         setTimeout(function () {
-            console.log(box);
+            console.log(box); //TODO refactorizar esta funcion
             highlightElement(box, 500);
         }, (index + 1) * 1000);
     });
 }
 
 function highlightElement(element, time) {
-    let bgColor = window.getComputedStyle(element).backgroundColor;
+    let elementBgColor = window.getComputedStyle(element).backgroundColor;
     setTimeout(function () {
         element.style.opacity = "1";
         element.style.scale = "1.02";
         element.style.zIndex = "5";
-        element.style.boxShadow = `0px 0px 105px 0px ${bgColor}`;
+        element.style.boxShadow = `0px 0px 105px 0px ${elementBgColor}`;
         setTimeout(function () {
             element.style.opacity = "0.8";
             element.style.scale = "1";
@@ -60,24 +78,66 @@ function getRandomBox() {
     return $boxes[RANDOM_INDEX];
 }
 
-function updateState(turn = "turno maquina") {
-    document.querySelector("#state").textContent += `${turn}`;
-}
-
-function playerTurn() {
-    setTimeout(function () {
-        console.log("turno jugador");
-        unlockInputBox();
-    }, (MACHINE_SEQUENCE.length + 1.5) * 1000);
-}
-
 function compareSequence() {
     return (
-        MACHINE_SEQUENCE[MACHINE_SEQUENCE.length - 1] ===
-        PLAYER_SEQUENCE[PLAYER_SEQUENCE.length - 1]
+        machineSequence[playerSequence.length - 1].id ===
+        playerSequence[playerSequence.length - 1].id
     );
 }
 
-function playerLose() {
-    compareSequence() ? turnMachineSequence() : blockInputBox();
+function handleResults(turnResults) {
+    if (!turnResults) {
+        console.log("perdiste");
+        updateState("player-lose");
+        blockPlayerInput();
+        resetStates();
+    } else if (machineSequence.length === playerSequence.length) {
+        resetPlayerSequence();
+        startTurn();
+    }
+}
+
+function resetStates() {
+    resetTurnCounter();
+    resetPlayerSequence();
+    resetMachineSequence();
+}
+
+function updateState(gameState) {
+    const GAME_STATES = {
+        machine: "Turno de la maquina",
+        player: "Turno del jugador",
+        "player-lose": "Perdiste",
+    };
+    document.querySelector("#state").innerText = GAME_STATES[gameState];
+    handleSpinner(gameState);
+}
+
+function handleSpinner(turnMachine) {
+    if (turnMachine === "machine") {
+        addSpinnerElement();
+    }
+}
+function createSpinnerElement() {
+    let $spinner = document.createElement("div");
+    $spinner.className = "spinner-border ms-3";
+    $spinner.role = "status";
+    return $spinner;
+}
+function addSpinnerElement() {
+    let $states = document.querySelector("#state");
+    let $childElement = createSpinnerElement();
+    $states.appendChild($childElement);
+}
+
+function resetPlayerSequence() {
+    playerSequence = [];
+}
+
+function resetMachineSequence() {
+    machineSequence = [];
+}
+
+function resetTurnCounter() {
+    turnCounter = 0;
 }

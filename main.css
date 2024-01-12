@@ -9,10 +9,18 @@ html {
     background-color: #0e100f;
     min-height: 100%;
 }
-
+.name-game {
+    background-color: #FFF3CD;
+    width: fit-content;
+    height: 3em;
+    border-radius: 10px;
+    padding: 15px;
+}
+.alert {
+    height: 4em !important;
+}
 .box {
     height: 200px;
-    border: 1px solid black;
     opacity: 0.8;
     transition: opacity 500ms;
     transition: scale 250ms;
