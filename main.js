@@ -43,14 +43,15 @@ function handlePlayerInput(event) {
 }
 
 function turnMachineSequence() {
+    turnCounter++;
     updateState("machine");
     blockPlayerInput();
-    turnCounter++;
+    console.log(turnCounter);
     machineSequence.push(getRandomBox());
     console.log("turno maquina");
     machineSequence.forEach(function (box, index) {
         setTimeout(function () {
-            console.log(box); //TODO refactorizar esta funcion
+            console.log(box);
             highlightElement(box, 500);
         }, (index + 1) * 1000);
     });
@@ -86,9 +87,18 @@ function compareSequence() {
 }
 
 function handleResults(turnResults) {
+    const TURNS_TO_WIN = 5;
     if (!turnResults) {
         console.log("perdiste");
         updateState("player-lose");
+        blockPlayerInput();
+        resetStates();
+    } else if (
+        machineSequence.length === playerSequence.length &&
+        machineSequence.length === TURNS_TO_WIN
+    ) {
+        console.log("ganaste");
+        updateState("player-win");
         blockPlayerInput();
         resetStates();
     } else if (machineSequence.length === playerSequence.length) {
@@ -96,6 +106,8 @@ function handleResults(turnResults) {
         startTurn();
     }
 }
+
+function playerWin() {}
 
 function resetStates() {
     resetTurnCounter();
@@ -108,8 +120,10 @@ function updateState(gameState) {
         machine: "Turno de la maquina",
         player: "Turno del jugador",
         "player-lose": "Perdiste",
+        "player-win": "Ganaste",
     };
     document.querySelector("#state").innerText = GAME_STATES[gameState];
+    document.querySelector("#turn").textContent = turnCounter;
     handleSpinner(gameState);
 }
 
