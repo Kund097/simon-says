@@ -60,15 +60,13 @@ function turnMachineSequence() {
 function highlightElement(element, time) {
     let elementBgColor = window.getComputedStyle(element).backgroundColor;
     setTimeout(function () {
-        element.style.opacity = "1";
-        element.style.scale = "1.02";
-        element.style.zIndex = "5";
+
         element.style.boxShadow = `0px 0px 105px 0px ${elementBgColor}`;
+        element.classList.add("box-highlight");
         setTimeout(function () {
-            element.style.opacity = "0.8";
-            element.style.scale = "1";
-            element.style.zIndex = "0";
+            
             element.style.boxShadow = "0px 0px 0px 0px rgb(0,0,0)";
+            element.classList.remove("box-highlight");
         }, 500);
     }, time);
 }

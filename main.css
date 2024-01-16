@@ -10,7 +10,7 @@ html {
     min-height: 100%;
 }
 .name-game {
-    background-color: #FFF3CD;
+    background-color: #fff3cd;
     width: fit-content;
     height: 3em;
     border-radius: 10px;
@@ -24,6 +24,14 @@ html {
     opacity: 0.8;
     transition: opacity 500ms;
     transition: scale 250ms;
+    cursor: pointer;
+}
+
+.box-highlight {
+    opacity: 1;
+    scale: 1.02;
+    z-index: 5;
+    box-shadow: 0px 0px 105px 0px;
 }
 
 #box-1 {
