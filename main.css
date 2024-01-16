@@ -1,0 +1,48 @@
+body,
+html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.container-fluid {
+    background-color: #0e100f;
+    min-height: 100%;
+}
+.name-game {
+    background-color: #fff3cd;
+    width: fit-content;
+    height: 3em;
+    border-radius: 10px;
+    padding: 15px;
+}
+.alert {
+    height: 4em !important;
+}
+.box {
+    height: 200px;
+    opacity: 0.8;
+    transition: opacity 500ms;
+    transition: scale 250ms;
+    cursor: pointer;
+}
+
+.box-highlight {
+    opacity: 1;
+    scale: 1.02;
+    z-index: 5;
+    box-shadow: 0px 0px 105px 0px;
+}
+
+#box-1 {
+    background-color: red;
+}
+#box-2 {
+    background-color: blue;
+}
+#box-3 {
+    background-color: yellow;
+}
+#box-4 {
+    background-color: green;
+}
