@@ -4,12 +4,12 @@ let playerSequence = [];
 let turnCounter = 0;
 
 $startButton.onclick = function () {
-    turnCounter ? console.log("ya empezó la partida") : startTurn();
+    turnCounter ? updateState("in-game"): startTurn();
 };
 
 function startTurn() {
-    turnMachineSequence();
-    playerTurn();
+    handleMachineTurn();
+    handlePlayerTurn();
 }
 
 function unlockPlayerInput() {
@@ -24,9 +24,8 @@ function blockPlayerInput() {
     });
 }
 
-function playerTurn() {
+function handlePlayerTurn() {
     setTimeout(function () {
-        console.log("turno jugador");
         updateState("player");
         unlockPlayerInput();
     }, (machineSequence.length + 1.5) * 1000);
@@ -36,22 +35,17 @@ function handlePlayerInput(event) {
     let $box = event.target;
     playerSequence.push($box);
     highlightElement($box);
-    console.log(playerSequence);
-
     let turnResults = compareSequence();
     handleResults(turnResults);
 }
 
-function turnMachineSequence() {
+function handleMachineTurn() {
     turnCounter++;
     updateState("machine");
     blockPlayerInput();
-    console.log(turnCounter);
     machineSequence.push(getRandomBox());
-    console.log("turno maquina");
     machineSequence.forEach(function (box, index) {
         setTimeout(function () {
-            console.log(box);
             highlightElement(box, 500);
         }, (index + 1) * 1000);
     });
@@ -87,7 +81,6 @@ function compareSequence() {
 function handleResults(turnResults) {
     const TURNS_TO_WIN = 5;
     if (!turnResults) {
-        console.log("perdiste");
         updateState("player-lose");
         blockPlayerInput();
         resetStates();
@@ -95,7 +88,6 @@ function handleResults(turnResults) {
         machineSequence.length === playerSequence.length &&
         machineSequence.length === TURNS_TO_WIN
     ) {
-        console.log("ganaste");
         updateState("player-win");
         blockPlayerInput();
         resetStates();
@@ -104,8 +96,6 @@ function handleResults(turnResults) {
         startTurn();
     }
 }
-
-function playerWin() {}
 
 function resetStates() {
     resetTurnCounter();
@@ -119,6 +109,7 @@ function updateState(gameState) {
         player: "Turno del jugador",
         "player-lose": "Perdiste",
         "player-win": "Ganaste",
+        "in-game" : "Ya empezó la partida"
     };
     document.querySelector("#state").innerText = GAME_STATES[gameState];
     document.querySelector("#turn").textContent = turnCounter;
